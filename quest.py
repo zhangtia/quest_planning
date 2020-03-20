@@ -1,11 +1,22 @@
-import tkinter
+""" DOCSTRING """
+
+import sys
 import camelot
 
+if len(sys.argv) > 2:
+    print("USAGE : python3 quest.py [OPTIONAL_FILENAME]")
+    sys.exit()
+
+filename = "quests_for_question.pdf"
+if len(sys.argv) == 2:
+    filename = sys.argv[1]
+
 # use camelot to read in spreadsheet values from PDF
-tables = camelot.read_pdf('quests_for_question.pdf', split_text=True)
+tables = camelot.read_pdf(filename, split_text=True)
 
 # Data will hold the data for each quest
 class Data:
+    """ Data will hold the data for each quest """
     def __init__(self, name, start, duration, reward):
         self.name = name
         self.start = start
@@ -22,17 +33,19 @@ tracker = []
 
 # comparator function that will be used to sort container
 def getstart(data):
+    """ comparator function that will be used to sort container """
     return data.start
 
 # From data read in by Camelot, store data in the class in container
-for i in range (0, len(tables[0].df)):
-    container.append(Data(tables[0].df.iloc[i][0], int(tables[0].df.iloc[i][1]), int(tables[0].df.iloc[i][2]), int(tables[0].df.iloc[i][3])))
+for i in range(0, len(tables[0].df)):
+    container.append(Data(tables[0].df.iloc[i][0], int(tables[0].df.iloc[i][1]),
+                          int(tables[0].df.iloc[i][2]), int(tables[0].df.iloc[i][3])))
 
 # sort container based on start date
 container.sort(key=getstart)
 
 # initialize maxpossible and tracker to size 32 (so we can index till day 31)
-for i in range (0,32):
+for i in range(0, 32):
     maxpossible.append(0)
     tracker.append([])
 
